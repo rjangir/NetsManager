@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import {
+  Container, Row, Col, Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button
+} from 'reactstrap'
 import Player from './Components/Players/Player';
 import PlayerList from './Components/Players/PlayerList'
 
@@ -7,20 +10,18 @@ function App(props) {
 
   const [items, setItems] = useState([])
 
-  getItems = () => {
+  const getItems = () => {
     fetch('http://localhost:3000/players')
       .then(response => response.json())
       .then(items => setItems(items))
       .catch(err => console.log(err))
   }
 
-  addItemToState = (item) => {
-    setValues(prevState => ({
-      items: [...prevState.items, item]
-    }))
+  const addItemToState = (item) => {
+    setItems([...items, item]);
   }
 
-  updateState = (item) => {
+  const updateState = (item) => {
     const itemIndex = items.findIndex(data => data.id === item.id)
     const newArray = [
       // destructure all items from beginning to the indexed item
@@ -30,44 +31,69 @@ function App(props) {
       // add the rest of the items to the array from the index after the replaced item
       ...items.slice(itemIndex + 1)
     ]
-    setItems({ items: newArray })
+    setItems(newArray)
   }
 
-  deleteItemFromState = (id) => {
+  const deleteItemFromState = (id) => {
     const updatedItems = items.filter(item => item.id !== id)
-    setItems({ items: updatedItems })
+    setItems(updatedItems)
   }
 
   useEffect(() => {
-    fetch('http://localhost:3000/players')
-      .then(response => response.json())
-      .then(items => setItems(items))
-      .catch(err => console.log(err))
+    getItems()
   }, []);
 
   return (
     <Container className="App">
       <Row>
         <Col>
-          <h1 style={{ margin: "20px 0" }}>PLayers</h1>
+          <Card >
+            <CardBody>
+              <h1>Package Plan</h1>
+              <h1 className="text-center">100 Hours</h1>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col>
+          <Card >
+            <CardBody>
+              <h1>Pakage Usage</h1>
+              <h1 className="text-center">10</h1>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col>
+          <Card >
+            <CardBody>
+              <h1>Total Sessions</h1>
+              <h1 className="text-center">18</h1>
+            </CardBody>
+          </Card>
         </Col>
       </Row>
       <Row>
         <Col>
-          <PlayerList items={items} updateState={updateState} deleteItemFromState={deleteItemFromState} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {/* <CSVLink
-              filename={"db.csv"}
-              color="primary"
-              style={{ float: "left", marginRight: "10px" }}
-              className="btn btn-primary"
-              data={items}>
-              Download CSV
-            </CSVLink> */}
-          <Player buttonLabel="Add Item" addItemToState={addItemToState} />
+          <Card>
+            <CardBody>
+              <Col>
+                <Row>
+                  <Col>
+                    <h1 style={{ margin: "20px 0" }}>Players</h1>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <PlayerList items={items} updateState={updateState} deleteItemFromState={deleteItemFromState} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Player buttonLabel="Add Player" addItemToState={addItemToState} />
+                  </Col>
+                </Row>
+              </Col>
+            </CardBody>
+          </Card>
         </Col>
       </Row>
     </Container>

@@ -4,12 +4,11 @@ import Player from './Player';
 
 function PlayerList(props) {
 
-    const [items, deleteItem] = useState(0);
 
-    deleteItem = id => {
+    const deleteItem = id => {
         let confirmDelete = window.confirm('Delete item forever?')
         if (confirmDelete) {
-            fetch('http://localhost:3000/crud', {
+            fetch('http://localhost:3000/players', {
                 method: 'delete',
                 headers: {
                     'Content-Type': 'application/json'
@@ -20,7 +19,7 @@ function PlayerList(props) {
             })
                 .then(response => response.json())
                 .then(item => {
-                    this.props.deleteItemFromState(id)
+                    props.deleteItemFromState(id)
                 })
                 .catch(err => console.log(err))
         }
@@ -28,18 +27,18 @@ function PlayerList(props) {
     }
 
 
-    const items = this.props.items.map(item => {
+    const items = props.items.map(item => {
         return (
             <tr key={item.id}>
                 <th scope="row">{item.id}</th>
                 <td>{item.name}</td>
                 <td>{item.phone}</td>
-                <td>{item.created_date}</td>
+                <td>{item.created_date.toString()}</td>
                 <td>
                     <div style={{ width: "110px" }}>
-                        <Player buttonLabel="Edit" item={item} updateState={this.props.updateState} />
+                        <Player buttonLabel="Edit" item={item} updateState={props.updateState} />
                         {' '}
-                        <Button color="danger" onClick={() => this.deleteItem(item.id)}>Del</Button>
+                        <Button color="danger" onClick={() => deleteItem(item.id)}>Del</Button>
                     </div>
                 </td>
             </tr>

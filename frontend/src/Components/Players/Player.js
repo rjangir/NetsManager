@@ -4,16 +4,14 @@ import PlayerAddEdit from './PlayerAddEdit'
 
 function Player(props) {
 
-    const [] = user
-    toggle = () => {
-        this.setState(prevState => ({
-            modal: !prevState.modal
-        }))
+    const [player, setPlayer] = useState(false)
+    const toggle = () => {
+        setPlayer(!player)
     }
 
-    const closeBtn = <button className="close" onClick={this.toggle}>&times;</button>
+    const closeBtn = <button className="close" onClick={toggle}>&times;</button>
 
-    const label = this.props.buttonLabel
+    const label = props.buttonLabel
 
     let button = ''
     let title = ''
@@ -21,14 +19,14 @@ function Player(props) {
     if (label === 'Edit') {
         button = <Button
             color="warning"
-            onClick={this.toggle}
+            onClick={toggle}
             style={{ float: "left", marginRight: "10px" }}>{label}
         </Button>
         title = 'Edit Item'
     } else {
         button = <Button
             color="success"
-            onClick={this.toggle}
+            onClick={toggle}
             style={{ float: "left", marginRight: "10px" }}>{label}
         </Button>
         title = 'Add New Item'
@@ -38,14 +36,14 @@ function Player(props) {
     return (
         <div>
             {button}
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
+            <Modal isOpen={player} toggle={toggle} className={props.className}>
+                <ModalHeader toggle={toggle} close={closeBtn}>{title}</ModalHeader>
                 <ModalBody>
                     <PlayerAddEdit
-                        addItemToState={this.props.addItemToState}
-                        updateState={this.props.updateState}
-                        toggle={this.toggle}
-                        item={this.props.item} />
+                        addItemToState={props.addItemToState}
+                        updateState={props.updateState}
+                        toggle={toggle}
+                        item={props.item} />
                 </ModalBody>
             </Modal>
         </div>
